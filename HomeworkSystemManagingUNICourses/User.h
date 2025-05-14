@@ -6,21 +6,31 @@ class User {
 private:
 	MyString name;
 	MyString family;
-	unsigned int userId;
+    size_t userId;
 
-	Mail* inbox;
-	size_t inboxSize;
-	size_t inboxCapacity;
+    MyString password;
+
+    Mail* inbox;
+    size_t inboxSize;
+
+    void copyInbox(const Mail* otherInbox, size_t size);
+    void freeInbox();
 
 public:
-	User(const MyString& name, const MyString& family, unsigned int id);
-	~User();
+    User(const MyString& firstName, const MyString& lastName, size_t id, const MyString& password);
+    User(const User& other);
+    User& operator=(const User& other);
+    ~User();
 
-	void getUserId() const;
+    const MyString& getFirstName() const;
+    const MyString& getLastName() const;
+    size_t getId() const;
 
-	void receiveMail(const Mail& mail);
-	void showInbox() const;
-	void clearInbox();
+    const MyString& getPassword() const;
+    void changePassword(const MyString& newPass);
 
+    void receiveMessage(const Mail& mail);
+    void printInbox() const;
+    void clearInbox();
 
 };

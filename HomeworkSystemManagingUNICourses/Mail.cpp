@@ -26,7 +26,7 @@ time_t Mail::getTimestamp() const {
 
 MyString Mail::getFormattedTimestamp() const {
     tm* localTime = std::localtime(&timestamp);
-    ostringstream oss;
-    oss << put_time(localTime, "%H:%M %d.%m.%Y");
-    return oss.str();
+    char buffer[100];
+    strftime(buffer, sizeof(buffer), "%H:%M %d.%m.%Y", localTime);
+    return MyString(buffer);
 }
