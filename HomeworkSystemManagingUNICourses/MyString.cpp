@@ -49,8 +49,10 @@ MyString MyString::operator+(const MyString& other) const {
     delete[] result.data;
     result.length = length + other.length;
     result.data = new char[result.length + 1];
+
     strcpy_s(result.data, this->length+1, this->data);
     strcat(result.data, other.data);
+
     return result;
 }
 
