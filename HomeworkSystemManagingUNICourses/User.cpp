@@ -2,8 +2,8 @@
 #include "Mail.h"
 #include <iostream>
 
-User::User(const MyString& fName, const MyString& lName, size_t id, const MyString& password)
-    : firstName(fName), lastName(lName), userId(id), password(password), inbox(nullptr), inboxSize(0) {
+User::User(const MyString& firstName, const MyString& lastName, size_t id, const MyString& password)
+    : firstName(firstName), lastName(lastName), userId(id), password(password), inbox(nullptr), inboxSize(0) {
 }
 
 User::User(const User& other)
@@ -67,14 +67,14 @@ void User::changePassword(const MyString& newPass) {
 
 void User::receiveMessage(const Mail& mail) {
     Mail* newInbox = new Mail[inboxSize + 1];
-    for (size_t i = 0; i < inboxSize; ++i) {
+    for (size_t i = 0; i < inboxSize; i++) {
         newInbox[i] = inbox[i];
     }
     newInbox[inboxSize] = mail;
 
     delete[] inbox;
     inbox = newInbox;
-    ++inboxSize;
+    inboxSize++;
 }
 
 void User::printInbox() const {

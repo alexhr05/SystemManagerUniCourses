@@ -133,6 +133,7 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Admin.h" />
     <ClInclude Include="Mail.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="User.h" />
