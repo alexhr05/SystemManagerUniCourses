@@ -141,7 +141,7 @@
     <ClInclude Include="Mail.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="Student.h" />
-    <ClInclude Include="SystemManage.h" />
+    <ClInclude Include="SystemManager.h" />
     <ClInclude Include="Teacher.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

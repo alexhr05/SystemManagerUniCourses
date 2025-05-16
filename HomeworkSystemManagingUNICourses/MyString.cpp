@@ -1,4 +1,4 @@
-#include "MyString.h"
+﻿#include "MyString.h"
 #include <iostream>
 
 MyString::MyString() : length(0) {
@@ -59,3 +59,19 @@ MyString MyString::operator+(const MyString& other) const {
 const char* MyString::c_str() const {
     return this->data;
 }
+
+bool MyString::equals(const MyString& other) const {
+    if (length != other.length) {
+        return false;
+    }
+
+    for (size_t i = 0; i < length; i++)
+    {
+        if (data[i] != other.data[i]) {
+            return false;
+
+        }
+    }
+    return true;
+}
+

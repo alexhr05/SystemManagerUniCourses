@@ -18,6 +18,8 @@ public:
 	const char& operator[](size_t index) const;
 	MyString operator+(const MyString& other) const;
 	const char* c_str() const;
+
+	bool equals(const MyString& other) const;
 };
 
 #endif

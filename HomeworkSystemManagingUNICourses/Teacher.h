@@ -2,6 +2,7 @@
 
 #include "User.h"
 #include "MyString.h"
+#include "SystemManager.h"
 
 class Teacher : public User {
 public:
@@ -10,4 +11,7 @@ public:
 	void createCourse();
 	void assignHomework();
 	void gradeAssignment();
+
+	void addStudentToCourse(const MyString& courseName, size_t studentId, SystemManager& manager);
+       
 };

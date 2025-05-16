@@ -59,7 +59,7 @@
     <ClInclude Include="Course.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SystemManage.h">
+    <ClInclude Include="SystemManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
