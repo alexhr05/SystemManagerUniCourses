@@ -4,8 +4,8 @@
 
 class User {
 private:
-	MyString name;
-	MyString family;
+	MyString firstName;
+	MyString lastName;
     size_t userId;
 
     MyString password;
@@ -30,6 +30,7 @@ public:
     void changePassword(const MyString& newPass);
 
     void receiveMessage(const Mail& mail);
+    
     void printInbox() const;
     void clearInbox();
 
