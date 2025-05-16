@@ -74,3 +74,26 @@ size_t Course::getTeacherId() const {
 void Course::setPassword(const MyString newPassword) {
     enrollPassword = newPassword;
 }
+
+void Course::addAssignment(const MyString assignmentName) {
+    Assignment* newAssignments = new Assignment[assignmentCount + 1];
+    for (size_t i = 0; i < assignmentCount; i++)
+    {
+        newAssignments[i] = assignments[i];
+    }
+    newAssignments[assignmentCount] = Assignment(assignmentName);
+
+    delete[] assignments;
+    assignments = newAssignments;
+    assignmentCount++;
+}
+
+
+Assignment* Course::getAssignmentByName(const MyString name) {
+    for (size_t i = 0; i < assignmentCount; i++)
+    {
+        if(assignments[i].getName().equals(name)) {
+            return &assignments[i];
+        }
+    }
+}

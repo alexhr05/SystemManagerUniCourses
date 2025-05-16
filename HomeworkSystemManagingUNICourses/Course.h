@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "MyString.h"
+#include "Assignment.h"
 
 class Course {
     MyString name;
@@ -8,6 +9,9 @@ class Course {
 
     size_t* studentIds;   // Масив от ID на записаните студенти
     size_t studentCount;
+
+    Assignment* assignments;
+    size_t assignmentCount;
 
 public:
     Course();
@@ -23,4 +27,7 @@ public:
     void setPassword(const MyString newPassword);
     void enrollStudent(size_t studentId);
     void printStudents() const;
+
+    void addAssignment(const MyString assignmentName);
+    Assignment* getAssignmentByName(const MyString name);
 };

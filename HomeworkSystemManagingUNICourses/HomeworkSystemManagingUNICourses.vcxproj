@@ -128,15 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="Assignment.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="HomeworkSystemManagingUNICourses.cpp" />
     <ClCompile Include="Mail.cpp" />
     <ClCompile Include="MyString.cpp" />
     <ClCompile Include="SystemManager.cpp" />
+    <ClCompile Include="Teacher.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h" />
+    <ClInclude Include="Assignment.h" />
     <ClInclude Include="Course.h" />
     <ClInclude Include="Mail.h" />
     <ClInclude Include="MyString.h" />
