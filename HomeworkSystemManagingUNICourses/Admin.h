@@ -9,5 +9,5 @@ public:
 
 	void createTeacher();
 	void createStudent();
-	void sendGlobalMessage(const MyString content, const User** allUsers, size_t userCount);
+	void sendGlobalMessage(const MyString content, User** allUsers, size_t userCount);
 };
