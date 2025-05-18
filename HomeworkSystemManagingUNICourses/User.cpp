@@ -2,7 +2,7 @@
 #include "Mail.h"
 #include <iostream>
 
-User::User(const MyString& firstName, const MyString& lastName, size_t id, const MyString& password)
+User::User(const MyString firstName, const MyString lastName, size_t id, const MyString password)
     : firstName(firstName), lastName(lastName), userId(id), password(password), inbox(nullptr), inboxSize(0) {
 }
 

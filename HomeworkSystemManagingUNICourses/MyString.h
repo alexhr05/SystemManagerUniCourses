@@ -20,6 +20,8 @@ public:
 	const char* c_str() const;
 
 	bool equals(const MyString& other) const;
+	MyString fromDouble(double number);
+
 };
 
 #endif

@@ -32,8 +32,7 @@ public:
     void setEnrollmentPassword(SystemManager& manager, const MyString courseName, const MyString newPassword);
 
     // 5. Оценяване на задания
-    void gradeAssignment(SystemManager& manager, const MyString courseName, const MyString assignmentName,
-        size_t studentId, double grade);
+    void gradeAssignment(SystemManager& system, const MyString courseName, const MyString assignmentName, size_t studentId, double grade);
 
     // 6. Изпращане на съобщения до студенти в курс
     void sendMessageToCourseStudents(SystemManager& manager, const MyString courseName, const MyString message);

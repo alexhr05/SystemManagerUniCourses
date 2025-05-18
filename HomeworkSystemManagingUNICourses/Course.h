@@ -31,7 +31,11 @@ public:
     size_t* getStudentIds() const;
     size_t getStudentCount() const;
     void printStudents() const;
+    bool isStudentEnrolled(size_t id);
+
 
     void addAssignment(const MyString assignmentName);
     Assignment* getAssignmentByName(const MyString name);
+    size_t getAssignmentCount() const;
+
 };

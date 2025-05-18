@@ -109,3 +109,17 @@ size_t* Course::getStudentIds() const {
 size_t Course::getStudentCount() const {
     return studentCount;
 }
+
+bool Course::isStudentEnrolled(size_t id) {
+    for (size_t i = 0; i < studentCount; i++)
+    {
+        if (studentIds[i] == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+size_t Course::getAssignmentCount() const {
+    return assignmentCount;
+}

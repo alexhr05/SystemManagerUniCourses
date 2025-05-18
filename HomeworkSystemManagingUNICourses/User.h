@@ -17,7 +17,7 @@ private:
     void freeInbox();
 
 public:
-    User(const MyString& firstName, const MyString& lastName, size_t id, const MyString& password);
+    User(const MyString firstName, const MyString lastName, size_t id, const MyString password);
     User(const User& other);
     User& operator=(const User& other);
     ~User();

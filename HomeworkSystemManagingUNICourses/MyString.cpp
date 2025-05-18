@@ -1,5 +1,6 @@
 ﻿#include "MyString.h"
 #include <iostream>
+#include <cmath>  
 
 MyString::MyString() : length(0) {
     this->data = new char[1];
@@ -73,5 +74,25 @@ bool MyString::equals(const MyString& other) const {
         }
     }
     return true;
+}
+
+MyString MyString::fromDouble(double number) {
+    int intPart = static_cast<int>(number);
+    int fractionalPart = static_cast<int>((number - intPart) * 100);  
+
+    // Конвертиране на цяло число в MyString (можеш да замениш с твоята функция от size_tToString)
+    char buffer[32];
+
+    // Handle negative numbers
+    if (number < 0) {
+        intPart = -intPart;
+        fractionalPart = -fractionalPart;
+        std::snprintf(buffer, sizeof(buffer), "-%d.%02d", intPart, fractionalPart);
+    }
+    else {
+        std::snprintf(buffer, sizeof(buffer), "%d.%02d", intPart, fractionalPart);
+    }
+
+    return MyString(buffer);
 }
 

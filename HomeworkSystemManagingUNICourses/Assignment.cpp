@@ -1,14 +1,15 @@
-#include "Assignment.h"
+﻿#include "Assignment.h"
 #include "MyString.h"
 #include <iostream>
 
-Assignment::Assignment() : studentAnswers(nullptr), studentIds(nullptr), answerCount(0) {}
+Assignment::Assignment() : studentAnswers(nullptr), studentIds(nullptr), answerCount(0) , grades(nullptr), gradeCount(0) {}
 
-Assignment::Assignment(const MyString name) : name(name), studentAnswers(nullptr), studentIds(nullptr), answerCount(0) {}
+Assignment::Assignment(const MyString name) : name(name), studentAnswers(nullptr), studentIds(nullptr), answerCount(0) , grades(nullptr) , gradeCount(0){}
 
 Assignment::Assignment(const Assignment& other) {
     name = other.name;
     answerCount = other.answerCount;
+    gradeCount = other.gradeCount;
 
     studentAnswers = new MyString[answerCount];
     studentIds = new size_t[answerCount];
@@ -16,14 +17,20 @@ Assignment::Assignment(const Assignment& other) {
         studentAnswers[i] = other.studentAnswers[i];
         studentIds[i] = other.studentIds[i];
     }
+
+    grades = new GradeEntry[gradeCount];
+    for (size_t i = 0; i < gradeCount; ++i)
+        grades[i] = other.grades[i];
 }
 
 Assignment& Assignment::operator=(const Assignment& other) {
     if (this != &other) {
         delete[] studentAnswers;
         delete[] studentIds;
+        delete[] grades;
         name = other.name;
         answerCount = other.answerCount;
+        gradeCount = other.gradeCount;
 
         studentAnswers = new MyString[answerCount];
         studentIds = new size_t[answerCount];
@@ -31,6 +38,10 @@ Assignment& Assignment::operator=(const Assignment& other) {
             studentAnswers[i] = other.studentAnswers[i];
             studentIds[i] = other.studentIds[i];
         }
+
+        grades = new GradeEntry[gradeCount];
+        for (size_t i = 0; i < gradeCount; ++i)
+            grades[i] = other.grades[i];
     }
     return *this;
 }
@@ -38,6 +49,7 @@ Assignment& Assignment::operator=(const Assignment& other) {
 Assignment::~Assignment() {
     delete[] studentAnswers;
     delete[] studentIds;
+    delete[] grades;
     studentAnswers = nullptr;
     studentIds = nullptr;
     answerCount = 0;
@@ -72,4 +84,32 @@ void Assignment::printAnswers() const {
 
 const MyString& Assignment::getName() const {
     return name;
+}
+
+
+void Assignment::addOrUpdateGrade(size_t studentId, double grade) {
+    for (size_t i = 0; i < gradeCount; i++) {
+        if (grades[i].studentId == studentId) {
+            grades[i].grade = grade;
+            return;
+        }
+    }
+
+    GradeEntry* newGrades = new GradeEntry[gradeCount + 1];
+    for (size_t i = 0; i < gradeCount; i++)
+        newGrades[i] = grades[i];
+    newGrades[gradeCount].studentId = studentId;
+    newGrades[gradeCount].grade = grade;
+
+    delete[] grades;
+    grades = newGrades;
+    gradeCount++;
+}
+
+double Assignment::getGradeByStudentId(size_t studentId) const {
+    for (size_t i = 0; i < gradeCount;i++) {
+        if (grades[i].studentId == studentId)
+            return grades[i].grade;
+    }
+    return -1;// Няма намерен резултат
 }
