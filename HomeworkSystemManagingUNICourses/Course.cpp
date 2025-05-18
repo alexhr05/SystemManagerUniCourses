@@ -75,6 +75,10 @@ void Course::setPassword(const MyString newPassword) {
     enrollPassword = newPassword;
 }
 
+MyString Course::getEnrollmentPassword() const {
+    return enrollPassword;
+}
+
 void Course::addAssignment(const MyString assignmentName) {
     Assignment* newAssignments = new Assignment[assignmentCount + 1];
     for (size_t i = 0; i < assignmentCount; i++)

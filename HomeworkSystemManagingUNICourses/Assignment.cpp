@@ -4,7 +4,7 @@
 
 Assignment::Assignment() : studentAnswers(nullptr), studentIds(nullptr), answerCount(0) {}
 
-Assignment::Assignment(const MyString& name) : name(name), studentAnswers(nullptr), studentIds(nullptr), answerCount(0) {}
+Assignment::Assignment(const MyString name) : name(name), studentAnswers(nullptr), studentIds(nullptr), answerCount(0) {}
 
 Assignment::Assignment(const Assignment& other) {
     name = other.name;
@@ -66,7 +66,7 @@ void Assignment::addAnswer(size_t studentId, const MyString& answer) {
 
 void Assignment::printAnswers() const {
     for (size_t i = 0; i < answerCount; i++) {
-        std::cout << "Student ID " << studentIds[i] << ": " << studentAnswers[i].c_str() << std::endl;
+        std::cout << "Student ID: " << studentIds[i] << "; Answer: " << studentAnswers[i].c_str() << std::endl;
     }
 }
 

@@ -10,7 +10,7 @@ private:
     
 public:
     Assignment();
-    Assignment(const MyString& name);
+    Assignment(const MyString name);
     Assignment(const Assignment& other);
     Assignment& operator=(const Assignment& other);
     ~Assignment();

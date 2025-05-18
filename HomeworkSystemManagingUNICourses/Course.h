@@ -25,6 +25,8 @@ public:
     size_t getTeacherId() const;
     
     void setPassword(const MyString newPassword);
+    MyString getEnrollmentPassword() const;
+        
     void enrollStudent(size_t studentId);
     void printStudents() const;
 
