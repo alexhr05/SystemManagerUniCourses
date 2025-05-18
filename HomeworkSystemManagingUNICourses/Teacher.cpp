@@ -1,4 +1,4 @@
-#include "Teacher.h"
+﻿#include "Teacher.h"
 #include "Course.h"
 #include "Assignment.h"
 #include "SystemManager.h"
@@ -82,7 +82,28 @@ void Teacher::setEnrollmentPassword(SystemManager& system, const MyString course
     cout << "Password set for course " << course->getName().c_str() << ".\n";
 }
 
-void Teacher::gradeAssignment(SystemManager& system, const MyString courseName, const MyString assignmentName, size_t studentId, const MyString grade) {
+char* size_tToString(size_t number) {
+    size_t temp = number;
+    int length = 0;
+
+    
+    do {
+        temp /= 10;
+        length++;
+    } while (temp != 0);
+
+    char* result = new char[length + 1];
+    result[length] = '\0';
+
+    for (int i = length - 1; i >= 0; --i) {
+        result[i] = '0' + (number % 10);
+        number /= 10;
+    }
+
+    return result;
+}
+
+void Teacher::gradeAssignment(SystemManager& system, const MyString courseName, const MyString assignmentName, size_t studentId, double grade) {
     Course* course = system.findCourseByName(courseName);
     if (!course || course->getTeacherId() != this->getId()) {
         cout << "Access denied.\n";
@@ -102,8 +123,52 @@ void Teacher::gradeAssignment(SystemManager& system, const MyString courseName, 
         return;
     }
 
-    MyString message = "Your assignment '" + assignmentName + "' was graded: " + grade;
-    Mail mail(this->getFirstName(), message); // assume firstName is sender name
+    char* gradeStr = size_tToString(grade);
+    MyString message = MyString("Your assignment '") + assignmentName + "' was graded: " + gradeStr;
+    Mail mail(this->getFirstName(), message); 
     student->receiveMessage(mail);
     cout << "Grade sent to student ID " << studentId << ".\n";
+    delete[] gradeStr;
+}
+
+
+void Teacher::sendMessageToCourseStudents(SystemManager& system, const MyString courseName, const MyString message) {
+    Course* course = system.findCourseByName(courseName);
+    if (!course || course->getTeacherId() != this->getId()) {
+        std::cout << "Unauthorized\n";
+        return;
+    }
+
+    size_t* students = course->getStudentIds();
+    size_t count = course->getStudentCount();
+    for (size_t i = 0; i < count; ++i) {
+        User* student = system.getUserById(students[i]);
+        if (student) {
+            student->receiveMessage(Mail(this->getFirstName(), message));
+        }
+    }
+}
+
+
+void Teacher::viewAnswers(SystemManager& system, const MyString courseName, const MyString assignmentName) {
+    Course* course = system.findCourseByName(courseName);
+    if (!course) {
+        cout << "Course not found.\n";
+        return;
+    }
+
+    // Проверка дали преподавателят води този курс
+    if (course->getTeacherId() != this->getId()) {
+        cout << "You are not the instructor of this course.\n";
+        return;
+    }
+
+    const Assignment* assignment = course->getAssignmentByName(assignmentName);
+    if (!assignment) {
+        cout << "Assignment not found.\n";
+        return;
+    }
+
+    cout << "Answers for assignment: " << assignmentName.c_str() << '\n';
+    assignment->printAnswers();
 }

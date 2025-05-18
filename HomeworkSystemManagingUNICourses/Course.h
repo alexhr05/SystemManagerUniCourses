@@ -28,6 +28,8 @@ public:
     MyString getEnrollmentPassword() const;
         
     void enrollStudent(size_t studentId);
+    size_t* getStudentIds() const;
+    size_t getStudentCount() const;
     void printStudents() const;
 
     void addAssignment(const MyString assignmentName);

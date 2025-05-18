@@ -19,7 +19,7 @@ SystemManager::SystemManager(const SystemManager& other) : courses(nullptr), cou
 SystemManager& SystemManager::operator=(const SystemManager& other) {
 	if (this != &other) {
 		delete[] courses;
-		for (size_t i = 0; i < userCount; ++i) {
+		for (size_t i = 0; i < userCount; i++) {
 			delete users[i];
 		}
 		delete[] users;
@@ -27,18 +27,38 @@ SystemManager& SystemManager::operator=(const SystemManager& other) {
 		// Копиране на курсове
 		courseCount = other.courseCount;
 		courses = new Course[courseCount];
-		for (size_t i = 0; i < courseCount; ++i) {
+		for (size_t i = 0; i < courseCount; i++) {
 			courses[i] = other.courses[i];
 		}
 
 		// Копиране на потребители (дълбоко копие)
 		userCount = other.userCount;
 		users = new User * [userCount];
-		for (size_t i = 0; i < userCount; ++i) {
+		for (size_t i = 0; i < userCount; i++) {
 			users[i] = other.users[i]; 
 		}
 	}
 	return *this;
+}
+
+void SystemManager::addUser(User* user) {
+	User** newUsers = new User* [userCount + 1];
+	for (size_t i = 0; i < userCount; i++) {
+		newUsers[i] = users[i];
+	}
+	newUsers[userCount] = user;
+	delete[] users;
+	users = newUsers;
+	userCount++;
+}
+
+User* SystemManager::getUserById(size_t id) const {
+	for (size_t i = 0; i < userCount; ++i) {
+		if (users[i]->getId() == id) {
+			return users[i];
+		}
+	}
+	return nullptr;
 }
 
 
@@ -73,13 +93,4 @@ Course* SystemManager::findCourseByName(const MyString name) {
 
 size_t SystemManager::generateCourseId() {
 	return nextCourseId++;
-}
-
-User* SystemManager::getUserById(size_t id) {
-	for (size_t i = 0; i < userCunt; ++i) {
-		if (users[i]->getId() == id) {
-			return users[i];
-		}
-	}
-	return nullptr; // not found
 }

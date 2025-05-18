@@ -39,5 +39,5 @@ public:
     void sendMessageToCourseStudents(SystemManager& manager, const MyString courseName, const MyString message);
 
     //7. Преглед на отговори
-    void viewAnswers(SystemManager& system, size_t courseId, const MyString& assignmentName);
+    void viewAnswers(SystemManager& system, const MyString courseName, const MyString assignmentName);
 };

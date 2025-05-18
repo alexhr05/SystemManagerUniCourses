@@ -101,3 +101,11 @@ Assignment* Course::getAssignmentByName(const MyString name) {
         }
     }
 }
+
+size_t* Course::getStudentIds() const {
+    return studentIds;
+}
+
+size_t Course::getStudentCount() const {
+    return studentCount;
+}
