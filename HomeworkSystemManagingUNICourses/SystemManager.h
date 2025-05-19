@@ -18,6 +18,8 @@ private:
 	void addUser(User* user); 
 
 	friend class Admin;  
+	
+
 
 public:
 	SystemManager();
@@ -33,4 +35,16 @@ public:
 
 	User* getUserById(size_t id) const;
 	size_t getUserCount() const;
+
+
+	void loadFromFiles();
+	void saveToFiles();
+
+	void saveCoursesToFile() const;
+	void loadCoursesFromFile();
+
+	void saveMailsToFile() const;
+	void loadMailsFromFile();
+
 };
+

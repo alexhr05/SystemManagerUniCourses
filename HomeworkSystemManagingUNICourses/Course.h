@@ -3,6 +3,7 @@
 #include "Assignment.h"
 
 class Course {
+    static size_t courseId;
     MyString name;
     MyString enrollPassword;
     size_t teacherId; // ID на преподавателя, който води курса
@@ -29,6 +30,7 @@ public:
         
     void enrollStudent(size_t studentId);
     size_t* getStudentIds() const;
+    size_t getStudentIds(size_t id) const;
     size_t getStudentCount() const;
     void printStudents() const;
     bool isStudentEnrolled(size_t id);
@@ -37,5 +39,6 @@ public:
     void addAssignment(const MyString assignmentName);
     Assignment* getAssignmentByName(const MyString name);
     size_t getAssignmentCount() const;
+    Assignment* getAssignmentAt(size_t index);
 
 };

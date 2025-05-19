@@ -4,10 +4,15 @@
 
 using namespace std;
 
-Course::Course() : name(""), teacherId(0), enrollPassword(""), studentIds(nullptr), studentCount(0) {}
+size_t Course::courseId= 0; 
+
+Course::Course() : name(""), teacherId(0), enrollPassword(""), studentIds(nullptr), studentCount(0){
+    courseId++;
+}
 
 Course::Course(const MyString name, size_t teacherId, const MyString password)
     : name(name), teacherId(teacherId), enrollPassword(password), studentIds(nullptr), studentCount(0) {
+    courseId++;
 }
 
 Course::Course(const Course& other) {
@@ -106,6 +111,10 @@ size_t* Course::getStudentIds() const {
     return studentIds;
 }
 
+size_t Course::getStudentIds(size_t id) const {
+    return studentIds[id];
+}
+
 size_t Course::getStudentCount() const {
     return studentCount;
 }
@@ -122,4 +131,9 @@ bool Course::isStudentEnrolled(size_t id) {
 
 size_t Course::getAssignmentCount() const {
     return assignmentCount;
+}
+
+Assignment* Course::getAssignmentAt(size_t index) {
+    if (index >= assignmentCount) return nullptr;
+    return &assignments[index];
 }

@@ -1,6 +1,7 @@
-#include "User.h"
+﻿#include "User.h"
 #include "Mail.h"
 #include <iostream>
+using namespace std;
 
 User::User(const MyString firstName, const MyString lastName, size_t id, const MyString password)
     : firstName(firstName), lastName(lastName), userId(id), password(password), inbox(nullptr), inboxSize(0) {
@@ -92,4 +93,16 @@ void User::printInbox() const {
 
 void User::clearInbox() {
     freeInbox();
+}
+
+size_t User::getInboxCount() const {
+    return inboxSize;
+}
+
+Mail& User::getInbox(size_t index) const {
+    if (index >= inboxSize) {
+        cerr << "Invalid inbox index\n";
+        exit(1);
+    }
+    return inbox[index];
 }

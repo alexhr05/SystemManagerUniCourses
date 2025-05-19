@@ -31,6 +31,8 @@ public:
 
     void receiveMessage(const Mail& mail);
     
+    size_t getInboxCount() const;
+    Mail& getInbox(size_t index) const;
     void printInbox() const;
     void clearInbox();
 

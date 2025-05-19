@@ -96,3 +96,32 @@ MyString MyString::fromDouble(double number) {
     return MyString(buffer);
 }
 
+
+std::istream& operator>>(std::istream& in, MyString& str) {
+    char buffer[1024];
+    in >> buffer; 
+    str = buffer;
+    return in;
+}
+
+
+MyString MyString::fromSizeT(size_t number) {
+    if (number == 0) return MyString("0");
+
+    char buffer[101];
+    size_t index = 100;
+    buffer[index] = '\0';
+
+    while (number > 0) {
+        buffer[--index] = '0' + (number % 10);
+        number /= 10;
+    }
+
+    return MyString(buffer + index);
+}
+
+void MyString::readFromStream(std::istream& in) {
+    char buffer[1024];
+    in.getline(buffer, 1024);
+    *this = buffer;
+}

@@ -1,11 +1,15 @@
 #pragma once
 #ifndef MYSTRING_H
 #define MYSTRING_H
+#include <iostream>
+
 
 class MyString {
 private:
 	char* data;
 	size_t length;
+
+	friend std::istream& operator>>(std::istream& in, MyString str);
 public:
 	MyString();
 	MyString(const char* str);
@@ -21,6 +25,8 @@ public:
 
 	bool equals(const MyString& other) const;
 	MyString fromDouble(double number);
+	static MyString fromSizeT(size_t number);
+	void readFromStream(std::istream& in);
 
 };
 

@@ -1,7 +1,9 @@
 ﻿#include "SystemManager.h"
 #include "User.h"
+#include "Admin.h"
 #include "MyString.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -93,4 +95,189 @@ Course* SystemManager::findCourseByName(const MyString name) {
 
 size_t SystemManager::generateCourseId() {
 	return nextCourseId++;
+}
+
+void SystemManager::loadFromFiles() {
+	// Зареждане на потребители
+	ifstream usersFile("users.dat");
+	if (usersFile.is_open()) {
+		size_t count;
+		usersFile >> count;
+		for (size_t i = 0; i < count; ++i) {
+			size_t role, id;
+			MyString fName, lName, pass;
+			usersFile >> role >> id >> fName >> lName >> pass;
+			if (role == 0)
+				addUser(new Admin(fName, lName, id, pass));
+			else if (role == 1)
+				addUser(new Teacher(fName, lName, id, pass));
+			else if (role == 2)
+				addUser(new Student(fName, lName, id, pass));
+		}
+		usersFile.close();
+	}
+
+	// Аналогично зареждане на courses.dat и mails.dat
+}
+
+void SystemManager::saveToFiles() {
+	ofstream usersFile("users.dat");
+	usersFile << userCount << '\n';
+	for (size_t i = 0; i < userCount; ++i) {
+		usersFile <<users[i]->getId() << " "
+			<< users[i]->getFirstName().c_str() << " "
+			<< users[i]->getLastName().c_str() << " "
+			<< users[i]->getPassword().c_str() << "\n";
+	}
+	usersFile.close();
+
+	// Аналогично за courses и mails
+}
+
+MyString fromSizeT(size_t number) {
+	if (number == 0) return MyString("0");
+
+	char buffer[101];
+	size_t index = 100;
+	buffer[index] = '\0';
+
+	while (number > 0) {
+		buffer[--index] = '0' + (number % 10);
+		number /= 10;
+	}
+
+	return MyString(buffer + index);
+}
+
+void SystemManager::saveCoursesToFile() const {
+	std::ofstream file("Course.dat");
+	if (!file.is_open()) {
+		std::cout << "Failed to open course file for saving.\n";
+		return;
+	}
+
+	file << courseCount << '\n';
+
+	for (size_t i = 0; i < courseCount; ++i) {
+		Course& c = courses[i];
+		file << c.getName().c_str() << ' ' << c.getTeacherId() << ' ' << c.getStudentCount() << '\n';
+
+		for (size_t j = 0; j < c.getStudentCount(); ++j) {
+			file << c.getStudentIds(j) << ' ';
+		}
+		file << '\n';
+
+		file << c.getAssignmentCount() << '\n';
+		for (size_t k = 0; k < c.getAssignmentCount(); ++k) {
+			Assignment* a = c.getAssignmentAt(k);
+			file << a->getName().c_str() << ' ' << a->getGradeCount() << '\n';
+
+			for (size_t l = 0; l < a->getGradeCount(); ++l) {
+				const GradeEntry& entry = a->getGradeEntryAt(l);
+				file << entry.studentId << ' ' << entry.answer.c_str() << ' ' << entry.grade << '\n';
+			}
+		}
+	}
+
+	file.close();
+}
+
+void SystemManager::loadCoursesFromFile() {
+	std::ifstream file("Course.dat");
+	if (!file.is_open()) return;
+
+	file >> courseCount;
+	file.ignore();
+
+	for (size_t i = 0; i < courseCount; ++i) {
+		size_t teacherId;
+		MyString name, password;
+
+		file >> teacherId;
+		file.ignore();
+		name.readFromStream(file);
+		password.readFromStream(file);
+
+		Course course(name,teacherId,  password);
+
+		size_t studentCount;
+		file >> studentCount;
+		for (size_t j = 0; j < studentCount; ++j) {
+			size_t studentId;
+			file >> studentId;
+			course.enrollStudent(studentId);
+		}
+
+		size_t assignmentCount;
+		file >> assignmentCount;
+		file.ignore();
+
+		for (size_t j = 0; j < assignmentCount; ++j) {
+			MyString aName;
+			aName.readFromStream(file);
+
+			Assignment assignment(aName);
+
+			size_t answerCount;
+			file >> answerCount;
+			file.ignore();
+
+			for (size_t k = 0; k < answerCount; ++k) {
+				size_t studentId;
+				MyString answer;
+				file >> studentId;
+				file.ignore();
+				answer.readFromStream(file);
+				assignment.addAnswer(studentId, answer);
+			}
+
+			course.addAssignment(aName);
+		}
+
+		courses[i] = course;
+	}
+
+	file.close();
+}
+
+
+void SystemManager::saveMailsToFile() const {
+	ofstream file("mails.dat");
+	if (!file.is_open()) return;
+
+	for (size_t i = 0; i < userCount; ++i) {
+		User* user = users[i];
+		file << user->getId() << '\n';
+		file << user->getInboxCount() << '\n';
+		for (size_t j = 0; j < user->getInboxCount(); j++) {
+			Mail& mail = user->getInbox(j);
+			file << mail.getSenderName().c_str() << '\n';
+			file << mail.getContent().c_str() << '\n';
+		}
+	}
+
+	file.close();
+}
+
+void SystemManager::loadMailsFromFile() {
+	ifstream file("mails.dat");
+	if (!file.is_open()) return;
+
+	while (!file.eof()) {
+		size_t id, count;
+		file >> id >> count;
+		file.ignore();
+
+		User* user = getUserById(id);
+		if (!user) continue;
+
+		for (size_t i = 0; i < count; ++i) {
+			MyString sender, message;
+			sender.readFromStream(file);
+			message.readFromStream(file);
+			user->receiveMessage(Mail(sender, message));
+		}
+	}
+
+	file.close();
 }
