@@ -39,5 +39,5 @@ public:
 
     //7. Преглед на отговори
     void viewAnswers(SystemManager& system, const MyString courseName, const MyString assignmentName);
-    Role getRole() const;
+    Role getRole() const override;
 };

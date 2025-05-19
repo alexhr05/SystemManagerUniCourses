@@ -10,5 +10,5 @@ public:
 	void createTeacher();
 	void createStudent();
 	void sendGlobalMessage(const MyString content, User** allUsers, size_t userCount);
-	Role getRole() const;
+	Role getRole() const override;
 };

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>  
 
+using namespace std;
+
 MyString::MyString() : length(0) {
     this->data = new char[1];
     this->data[0] = '\0';
@@ -98,9 +100,20 @@ MyString MyString::fromDouble(double number) {
 
 
 std::istream& operator>>(std::istream& in, MyString& str) {
-    char buffer[1024];
+    /*char buffer[1024];
     in >> buffer; 
     str = buffer;
+    return in;*/
+    const int MAX_LEN = 1024;
+    char buffer[MAX_LEN];
+
+    // Пропуска всички водещи whitespace символи (ако има)
+    in >> ws;
+
+    // Чете до края на реда (включва space)
+    in.getline(buffer, MAX_LEN);
+
+    str = MyString(buffer);
     return in;
 }
 

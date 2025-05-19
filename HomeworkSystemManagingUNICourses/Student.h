@@ -13,5 +13,5 @@ public:
     void selfEnrollInCourse(SystemManager& system, const MyString courseName, const MyString password);
     void submitAssignment(SystemManager& system, const MyString courseName, const MyString assignmentName, const MyString answer);
     void viewGrades(SystemManager& system, const MyString courseName, const MyString assingmentName);
-    Role getRole() const;
+    Role getRole() const override;
 };

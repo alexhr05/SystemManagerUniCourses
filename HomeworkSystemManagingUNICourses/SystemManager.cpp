@@ -290,3 +290,194 @@ User* SystemManager::login(size_t id, const MyString& password) {
 	}
 	return nullptr;
 }
+
+bool SystemManager::addTeacher(const MyString firstName, const MyString lastName, const MyString password) {
+	size_t newId = generateNextUserId();
+	Teacher* teacher = new Teacher(firstName, lastName, newId, password );
+	addUser(teacher);
+	cout << "Added teacher " << firstName.c_str() << " " << lastName.c_str() << " with ID " << newId << "!\n";
+	return true;
+}
+
+bool SystemManager::addStudent(const MyString firstName, const MyString lastName, const MyString password) {
+	size_t newId = generateNextUserId();
+	Student* student = new Student(firstName, lastName, newId, password );
+	addUser(student);
+	cout << "Added student " << firstName.c_str() << " " << lastName.c_str() << " with ID " << newId << "!\n";
+	return true;
+}
+
+size_t SystemManager::generateNextUserId() {
+	return nextUserId++;
+}
+
+size_t SystemManager::generateNextCourseId(){
+	return nextCourseId++; 
+}
+
+bool SystemManager::isAdmin(User* user) {
+	return user && user->getRole() == Role::Admin;
+}
+
+bool SystemManager::isTeacher(User* user) {
+	return user && user->getRole() == Role::Teacher;
+}
+
+bool SystemManager::isStudent(User* user) {
+	return user && user->getRole() == Role::Student;
+}
+
+
+void SystemManager::executeAdminCommand(SystemManager& system, const MyString& command, User* user) {
+	if (!user || !system.isAdmin(user)) {
+		cout << "Access denied.\n";
+		return;
+	}
+
+	if (command.equals("add_teacher")) {
+		MyString firstName, lastName, password;
+		cin >> firstName >> lastName >> password;
+
+		size_t newId = system.generateNextUserId();
+		Teacher* teacher = new Teacher(firstName, lastName, newId, password);
+		system.addTeacher(firstName, lastName, password);
+
+		cout << "Added teacher " << firstName.c_str() << " " << lastName.c_str()
+			<< " with ID " << newId << "!\n";
+
+	}
+	else if (command.equals("add_student")) {
+		MyString firstName, lastName, password;
+		cin >> firstName >> lastName >> password;
+
+		size_t newId = system.generateNextUserId();
+		Student* student = new Student(firstName, lastName, newId,password);
+		system.addStudent(firstName, lastName, password);
+
+		cout << "Added student " << firstName.c_str() << " " << lastName.c_str()
+			<< " with ID " << newId << "!\n";
+
+	}
+	else if (command.equals("message_all")) {
+		MyString message;
+		cin >> message;
+		User** users = system.getUsers();
+		for (size_t i = 0; i < system.getUserCount(); ++i) {
+			if (users[i]->getId() != user->getId()) {
+				Mail mail(user->getFirstName(), message);
+				users[i]->receiveMessage(mail);
+			}
+		}
+
+		cout << "Message sent to all users.\n";
+
+	}
+	else {
+		cout << "Unknown admin command.\n";
+	}
+}
+
+void SystemManager::executeTeacherCommand(SystemManager& system,const MyString& command, Teacher* teacher) {
+	if (!teacher) {
+		cout << "Access denied.\n";
+		return;
+	}
+
+	if (command.equals( "create_course")) {
+		MyString courseName, password;
+		cin >> courseName >> password;
+		Course newCourse(courseName, teacher->getId(), password);
+		
+		system.AddCourse(newCourse);
+		cout << "Course \"" << courseName.c_str()<<endl;
+	}
+	else if (command.equals( "add_to_course")) {
+		MyString courseName;
+		size_t studentId;
+		cin >> courseName >> studentId;
+
+		Course* course = system.findCourseByName(courseName);
+		if (!course || course->getTeacherId() != teacher->getId()) {
+			cout << "Course not found or permission denied.\n";
+			return;
+		}
+
+		course->enrollStudent(studentId);
+		User* student = system.getUserById(studentId);
+		if (student) {
+			Mail mail(teacher->getFirstName(), MyString(teacher->getFirstName() + " " + teacher->getLastName() + " added you to " + courseName));
+			student->receiveMessage(mail);
+		}
+		cout << "Student added to course.\n";
+		
+
+	}
+	else if (command.equals( "send_message")) {
+		size_t studentId;
+		cin >> studentId;
+		MyString message;
+		cin >> message;
+
+		User* student = system.getUserById(studentId);
+		if (student) {
+			Mail mail(teacher->getFirstName(), message);
+			student->receiveMessage(mail);
+			cout << "Message sent to student.\n";
+		}
+		else {
+			cout << "Student not found.\n";
+		}
+
+	}
+	else {
+		cout << "Unknown teacher command.\n";
+	}
+}
+
+void SystemManager::executeStudentCommand(SystemManager& system, const MyString& command, Student* student) {
+	if (!student) {
+		cout << "Access denied.\n";
+		return;
+	}
+
+	if (command.equals( "mailbox")) {
+		student->printInbox();
+
+	}
+	else if (command.equals( "view_grades")) {
+		MyString courseName, assignmentName;
+		cout << "Write courseName and assignment name";
+		cin >> courseName >> assignmentName;
+		student->viewGrades(system, courseName, assignmentName);  // използва SystemManager за достъп до курсове и оценки
+
+	}
+	else if (command.equals( "submit_assignment")) {
+		MyString courseName, assignmentName, answer;
+		cin >> courseName >> assignmentName;
+		cin >> answer;
+
+		Course* course = system.findCourseByName(courseName);
+		if (!course || !course->isStudentEnrolled(student->getId())) {
+			cout << "You are not enrolled in this course.\n";
+			return;
+		}
+
+		Assignment* assignment = course->getAssignmentByName(assignmentName);
+		if (!assignment) {
+			cout << "Assignment not found.\n";
+			return;
+		}
+
+		assignment->addAnswer(student->getId(), answer);
+		cout << "Assignment submitted.\n";
+
+	}
+	else {
+		cout << "Unknown student command.\n";
+	}
+}
+
+
+User** SystemManager::getUsers() const {
+	return users;
+}

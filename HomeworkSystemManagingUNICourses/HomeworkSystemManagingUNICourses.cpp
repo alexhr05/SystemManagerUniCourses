@@ -16,17 +16,6 @@ using namespace std;
 
 const size_t MAX_COMMAND_LENGTH = 256;
 
-bool isAdmin(User* user) {
-    return user && user->getRole() == Role::Admin;
-}
-
-bool isTeacher(User* user) {
-    return user && user->getRole() == Role::Teacher;
-}
-
-bool isStudent(User* user) {
-    return user && user->getRole() == Role::Student;
-}
 
 int main() {
     SystemManager system;
@@ -65,14 +54,14 @@ int main() {
         }
         else if (loggedUser) {
             // Разпознаване на команди според ролята
-            if (isAdmin(loggedUser)) {
-                /*system.executeAdminCommand(command, loggedUser);*/
+            if (system.isAdmin(loggedUser)) {
+                executeAdminCommand(system, command, loggedUser);
             }
-            else if (isTeacher(loggedUser)) {
+            else if (system.isTeacher(loggedUser)) {
 
                 /*system.executeTeacherCommand(command, loggedUser);*/
             }
-            else if (isStudent(loggedUser)) {
+            else if (system.isStudent(loggedUser)) {
                 cout << "students";
                 /*system.executeStudentCommand(command, loggedUser);*/
             }

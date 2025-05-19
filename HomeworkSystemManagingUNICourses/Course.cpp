@@ -137,3 +137,7 @@ Assignment* Course::getAssignmentAt(size_t index) {
     if (index >= assignmentCount) return nullptr;
     return &assignments[index];
 }
+
+MyString Course::getCourseId() const {
+    return courseId;
+}

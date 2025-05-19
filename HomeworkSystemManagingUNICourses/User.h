@@ -1,6 +1,7 @@
 #pragma once
 #include "MyString.h"
 #include "Mail.h"
+#include "Role.h"
 
 class User {
 private:

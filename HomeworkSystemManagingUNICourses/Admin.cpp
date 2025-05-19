@@ -15,6 +15,6 @@ void Admin::sendGlobalMessage(const MyString content, User** allUsers, size_t us
 	}
 }
 
-Role Admin::getRole() const {
+Role Admin::getRole() const  {
 	return Role::Admin;
 }
