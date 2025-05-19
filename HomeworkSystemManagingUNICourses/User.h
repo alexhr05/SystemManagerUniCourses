@@ -36,4 +36,6 @@ public:
     void printInbox() const;
     void clearInbox();
 
+    virtual Role getRole() const = 0;
+
 };

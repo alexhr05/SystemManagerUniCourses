@@ -97,9 +97,9 @@ size_t SystemManager::generateCourseId() {
 	return nextCourseId++;
 }
 
-void SystemManager::loadFromFiles() {
+void SystemManager::loadUsersFromFile() {
 	// Зареждане на потребители
-	ifstream usersFile("users.dat");
+	ifstream usersFile("users.txt");
 	if (usersFile.is_open()) {
 		size_t count;
 		usersFile >> count;
@@ -120,8 +120,8 @@ void SystemManager::loadFromFiles() {
 	// Аналогично зареждане на courses.dat и mails.dat
 }
 
-void SystemManager::saveToFiles() {
-	ofstream usersFile("users.dat");
+void SystemManager::saveUserToFiles() {
+	ofstream usersFile("users.txt");
 	usersFile << userCount << '\n';
 	for (size_t i = 0; i < userCount; ++i) {
 		usersFile <<users[i]->getId() << " "
@@ -150,7 +150,7 @@ MyString fromSizeT(size_t number) {
 }
 
 void SystemManager::saveCoursesToFile() const {
-	std::ofstream file("Course.dat");
+	std::ofstream file("Course.txt");
 	if (!file.is_open()) {
 		std::cout << "Failed to open course file for saving.\n";
 		return;
@@ -183,7 +183,7 @@ void SystemManager::saveCoursesToFile() const {
 }
 
 void SystemManager::loadCoursesFromFile() {
-	std::ifstream file("Course.dat");
+	std::ifstream file("Course.txt");
 	if (!file.is_open()) return;
 
 	file >> courseCount;
@@ -242,7 +242,7 @@ void SystemManager::loadCoursesFromFile() {
 
 
 void SystemManager::saveMailsToFile() const {
-	ofstream file("mails.dat");
+	ofstream file("mails.txt");
 	if (!file.is_open()) return;
 
 	for (size_t i = 0; i < userCount; ++i) {
@@ -260,7 +260,7 @@ void SystemManager::saveMailsToFile() const {
 }
 
 void SystemManager::loadMailsFromFile() {
-	ifstream file("mails.dat");
+	ifstream file("mails.txt");
 	if (!file.is_open()) return;
 
 	while (!file.eof()) {
@@ -280,4 +280,13 @@ void SystemManager::loadMailsFromFile() {
 	}
 
 	file.close();
+}
+
+User* SystemManager::login(size_t id, const MyString& password) {
+	for (size_t i = 0; i < userCount; i++) {
+		if (users[i]->getId() == id && users[i]->getPassword().equals(password)) {
+			return users[i];
+		}
+	}
+	return nullptr;
 }

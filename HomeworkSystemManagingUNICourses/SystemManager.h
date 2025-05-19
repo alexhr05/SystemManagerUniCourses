@@ -37,14 +37,16 @@ public:
 	size_t getUserCount() const;
 
 
-	void loadFromFiles();
-	void saveToFiles();
+	void loadUsersFromFile();
+	void saveUserToFiles();
 
 	void saveCoursesToFile() const;
 	void loadCoursesFromFile();
 
 	void saveMailsToFile() const;
 	void loadMailsFromFile();
+
+	User* login(size_t id, const MyString& password);
 
 };
 

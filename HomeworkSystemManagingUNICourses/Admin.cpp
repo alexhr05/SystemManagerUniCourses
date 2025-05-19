@@ -1,6 +1,7 @@
 #include "Admin.h"
 #include "User.h"
 #include "Mail.h"
+#include "Role.h"
 #include <ctime>
 
 
@@ -12,4 +13,8 @@ void Admin::sendGlobalMessage(const MyString content, User** allUsers, size_t us
 			allUsers[i]->receiveMessage(Mail("admin",content));
 		}
 	}
+}
+
+Role Admin::getRole() const {
+	return Role::Admin;
 }

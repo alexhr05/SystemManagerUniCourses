@@ -2,6 +2,7 @@
 #include "Course.h"
 #include "MyString.h"
 #include "Assignment.h"
+#include "Role.h"
 #include <iostream>
 #include "MyString.cpp"
 
@@ -79,4 +80,8 @@ void Student::viewGrades(SystemManager& system, const MyString courseName, const
     if (!hasGrades) {
         cout << "No grades available.\n";
     }
+}
+
+Role Student::getRole() const {
+    return Role::Student;
 }

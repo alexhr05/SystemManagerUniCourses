@@ -2,19 +2,17 @@
 #include "MyString.h"
 #include <iostream>
 
-Assignment::Assignment() : studentAnswers(nullptr), studentIds(nullptr), answerCount(0) , grades(nullptr), gradeCount(0) {}
+Assignment::Assignment() :  studentIds(nullptr), answerCount(0) , grades(nullptr), gradeCount(0) {}
 
-Assignment::Assignment(const MyString name) : name(name), studentAnswers(nullptr), studentIds(nullptr), answerCount(0) , grades(nullptr) , gradeCount(0){}
+Assignment::Assignment(const MyString name) : name(name), studentIds(nullptr), answerCount(0) , grades(nullptr) , gradeCount(0){}
 
 Assignment::Assignment(const Assignment& other) {
     name = other.name;
     answerCount = other.answerCount;
     gradeCount = other.gradeCount;
 
-    studentAnswers = new MyString[answerCount];
     studentIds = new size_t[answerCount];
     for (size_t i = 0; i < answerCount; i++) {
-        studentAnswers[i] = other.studentAnswers[i];
         studentIds[i] = other.studentIds[i];
     }
 
@@ -25,17 +23,14 @@ Assignment::Assignment(const Assignment& other) {
 
 Assignment& Assignment::operator=(const Assignment& other) {
     if (this != &other) {
-        delete[] studentAnswers;
         delete[] studentIds;
         delete[] grades;
         name = other.name;
         answerCount = other.answerCount;
         gradeCount = other.gradeCount;
 
-        studentAnswers = new MyString[answerCount];
         studentIds = new size_t[answerCount];
         for (size_t i = 0; i < answerCount; i++) {
-            studentAnswers[i] = other.studentAnswers[i];
             studentIds[i] = other.studentIds[i];
         }
 
@@ -49,7 +44,6 @@ Assignment& Assignment::operator=(const Assignment& other) {
 Assignment::~Assignment() {
     delete[] studentIds;
     delete[] grades;
-    studentAnswers = nullptr;
     studentIds = nullptr;
     answerCount = 0;
 }
@@ -59,20 +53,20 @@ Assignment::~Assignment() {
 void Assignment::addAnswer(size_t studentId, const MyString& answer) {
     MyString* newAnswers = new MyString[answerCount + 1];
     size_t* newIds = new size_t[answerCount + 1];
-    GradeEntry* newGrade = new GradeEntry[]
+    GradeEntry* newGrades = new GradeEntry[gradeCount + 1];
 
     for (size_t i = 0; i < answerCount; i++) {
-        newAnswers[i] = studentAnswers[i];
+        newGrades[i] = grades[i];
         newIds[i] = studentIds[i];
     }
 
     newAnswers[answerCount] = answer;
     newIds[answerCount] = studentId;
 
-    delete[] studentAnswers;
+    delete[] grades;
     delete[] studentIds;
 
-    studentAnswers = newAnswers;
+    grades = newGrades;
     studentIds = newIds;
     answerCount++;
 }
@@ -81,7 +75,7 @@ void Assignment::addAnswer(size_t studentId, const MyString& answer) {
 
 void Assignment::printAnswers() const {
     for (size_t i = 0; i < answerCount; i++) {
-        std::cout << "Student ID: " << studentIds[i] << "; Answer: " << studentAnswers[i].c_str() << std::endl;
+        std::cout << "Student ID: " << studentIds[i] << "; Answer: " << grades[i].answer.c_str() << std::endl;
     }
 }
 

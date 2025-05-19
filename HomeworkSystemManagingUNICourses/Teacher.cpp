@@ -1,5 +1,6 @@
 ﻿#include "Teacher.h"
 #include "Course.h"
+#include "Role.h"
 #include "Assignment.h"
 #include "SystemManager.h"
 #include <iostream>
@@ -161,4 +162,8 @@ void Teacher::viewAnswers(SystemManager& system, const MyString courseName, cons
 
     cout << "Answers for assignment: " << assignmentName.c_str() << '\n';
     assignment->printAnswers();
+}
+
+Role Teacher::getRole() const {
+    return Role::Teacher;
 }
