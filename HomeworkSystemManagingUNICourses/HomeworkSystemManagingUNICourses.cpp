@@ -55,15 +55,15 @@ int main() {
         else if (loggedUser) {
             // Разпознаване на команди според ролята
             if (system.isAdmin(loggedUser)) {
-                executeAdminCommand(system, command, loggedUser);
+                system.executeAdminCommand(system, command, loggedUser);
             }
             else if (system.isTeacher(loggedUser)) {
-
-                /*system.executeTeacherCommand(command, loggedUser);*/
+                Teacher* teacher = dynamic_cast<Teacher*>(loggedUser);
+                system.executeTeacherCommand(system,command, teacher);
             }
             else if (system.isStudent(loggedUser)) {
-                cout << "students";
-                /*system.executeStudentCommand(command, loggedUser);*/
+                Student* students = dynamic_cast<Student*>(loggedUser);
+                system.executeStudentCommand(system,command, students);
             }
         }
         else {
@@ -74,8 +74,8 @@ int main() {
     }
     return 0;
 
-    /*system.saveUsersToFile("users.txt");
-    system.saveCoursesToFile("Courses.txt");
-    system.saveMailsToFile("Mails.txt");*/
+    system.saveUserToFiles();
+    system.saveCoursesToFile();
+    system.saveMailsToFile();
     return 0;
 }

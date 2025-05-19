@@ -24,7 +24,6 @@ public:
     const MyString& getName() const;
     const MyString& getPassword() const;
     size_t getTeacherId() const;
-    MyString getCourseId() const;
     
     void setPassword(const MyString newPassword);
     MyString getEnrollmentPassword() const;
