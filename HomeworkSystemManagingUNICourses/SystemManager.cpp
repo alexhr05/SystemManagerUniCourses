@@ -99,7 +99,7 @@ size_t SystemManager::generateCourseId() {
 
 void SystemManager::loadUsersFromFile() {
 	// Зареждане на потребители
-	ifstream usersFile("users.txt");
+	ifstream usersFile("Users.txt");
 	if (usersFile.is_open()) {
 		size_t count;
 		usersFile >> count;
@@ -121,7 +121,7 @@ void SystemManager::loadUsersFromFile() {
 }
 
 void SystemManager::saveUserToFiles() {
-	ofstream usersFile("users.txt");
+	ofstream usersFile("Users.txt");
 	usersFile << userCount << '\n';
 	for (size_t i = 0; i < userCount; ++i) {
 		usersFile <<users[i]->getId() << " "
